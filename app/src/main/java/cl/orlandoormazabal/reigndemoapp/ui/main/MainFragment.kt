@@ -34,9 +34,21 @@ class MainFragment : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setRecyclerView()
+        initViews()
         initObservables()
         viewModel.getHitList()
+    }
+
+    private fun initViews() {
+        setSwipeLayout()
+        setRecyclerView()
+    }
+
+    private fun setSwipeLayout() {
+        binding.swipeLayout.setOnRefreshListener {
+            viewModel.getHitList()
+            binding.swipeLayout.isRefreshing = false
+        }
     }
 
     private fun setRecyclerView() {
