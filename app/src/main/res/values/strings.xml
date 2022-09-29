@@ -3,6 +3,8 @@
     <string name="app_name">Reign Demo App</string>
     <string name="action_settings">Settings</string>
     <string name="no_url">No contiene URL</string>
+    <string name="empty_list">No hay elementos para mostrar</string>
+    <string name="error_message">Hubo un error al cargar los datos</string>
 
     <!-- Strings used for fragments for navigation -->
     <string name="main_fragment_label">Main</string>

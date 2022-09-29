@@ -21,6 +21,8 @@ import org.koin.android.ext.android.inject
 
 private const val SHOW_LOADING = 0
 private const val SHOW_CONTENT = 1
+private const val SHOW_EMPTY_LIST = 2
+private const val SHOW_ERROR = 3
 
 class MainFragment : Fragment() {
 
@@ -43,7 +45,6 @@ class MainFragment : Fragment() {
         initViews()
         initObservables()
         viewModel.getHitList()
-
     }
 
     private fun initViews() {
@@ -77,11 +78,17 @@ class MainFragment : Fragment() {
     private fun result(result: Resource<List<Hit>>?) {
         when (result) {
             is Resource.Loading -> displayView(SHOW_LOADING)
-            is Resource.Success -> {
-                adapter.swapItems(result.data)
-                displayView(SHOW_CONTENT)
-            }
-            else -> { }
+            is Resource.Success -> onSuccess(result.data)
+            else -> displayView(SHOW_ERROR)
+        }
+    }
+
+    private fun onSuccess(hitList: List<Hit>) {
+        if (hitList.isEmpty()) {
+            displayView(SHOW_EMPTY_LIST)
+        } else {
+            adapter.swapItems(hitList)
+            displayView(SHOW_CONTENT)
         }
     }
 

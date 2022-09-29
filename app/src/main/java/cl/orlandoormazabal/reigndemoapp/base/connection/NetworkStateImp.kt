@@ -19,11 +19,9 @@ class NetworkStateImp(private val context: Context): NetworkState {
 
     private fun setNetworkStateCallback(): ConnectivityManager.NetworkCallback =
         object : ConnectivityManager.NetworkCallback() {
-            override fun onAvailable(network: Network) {
-            }
+            override fun onAvailable(network: Network) { }
 
-            override fun onLost(network: Network) {
-            }
+            override fun onLost(network: Network) { }
         }
 
     private fun hasTransport(networkCapabilities: NetworkCapabilities?): Connection =
@@ -40,20 +38,3 @@ class NetworkStateImp(private val context: Context): NetworkState {
             else -> Connection(ConnectionState.DISCONNECTED, ConnectionType.NETWORK_NO_CONNECTION, false)
         }
 }
-
-enum class ConnectionState(val value: String) {
-    CONNECTED("Available"),
-    DISCONNECTED("Unavailable")
-}
-
-enum class ConnectionType{
-    WIFI,
-    MOBILE,
-    NETWORK_NO_CONNECTION
-}
-
-data class Connection(
-    val state: ConnectionState,
-    val type: ConnectionType,
-    val isInternetAvailable: Boolean
-)
