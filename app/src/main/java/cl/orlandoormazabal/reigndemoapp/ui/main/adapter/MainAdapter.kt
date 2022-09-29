@@ -12,7 +12,7 @@ class MainAdapter(private val manager: HitManager): BaseAdapter<Hit>() {
         fun onHitItemClick(hit: Hit)
     }
 
-    override fun provideComparator() = compareBy(Hit::storyId)
+    override fun provideComparator() = compareBy(Hit::objectId)
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): BaseViewHolder<Hit> =
         HitViewHolder(HitItemView(parent.context))

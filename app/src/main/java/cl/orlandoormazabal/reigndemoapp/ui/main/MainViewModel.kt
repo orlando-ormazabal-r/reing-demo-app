@@ -17,12 +17,14 @@ class MainViewModel(private val repo: Repo): ViewModel() {
         get() = _hitList
 
     fun getHitList() {
-        viewModelScope.launch {
-            _hitList.value = Resource.Loading()
-            try {
-                _hitList.value = Resource.Success(repo.getRemoteHits())
-            } catch (e: Exception) {
+        if(hitList.value == null) {
+            viewModelScope.launch {
+                _hitList.value = Resource.Loading()
+                try {
+                    _hitList.value = Resource.Success(repo.getHits())
+                } catch (e: Exception) {
 
+                }
             }
         }
     }

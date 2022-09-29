@@ -4,5 +4,5 @@ import cl.orlandoormazabal.reigndemoapp.data.model.Hit
 
 interface LocalDataSource {
 
-    fun getLocalHits(): List<Hit>
+    suspend fun getLocalHits(hitDao: HitDao): List<Hit>
 }

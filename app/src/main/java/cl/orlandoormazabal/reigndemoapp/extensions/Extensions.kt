@@ -8,7 +8,7 @@ import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import cl.orlandoormazabal.reigndemoapp.data.model.Hit
+import cl.orlandoormazabal.reigndemoapp.data.model.*
 
 fun <T, L : LiveData<T>> Fragment.observe(liveData: L, body: (T?) -> Unit) =
     liveData.observe(viewLifecycleOwner, Observer(body))
@@ -40,3 +40,26 @@ fun WebView.loadUrl(url: String, func: () -> Unit = { } ) {
     }
     this.loadUrl(url)
 }
+
+fun Hit.toHitEntity() =
+    HitEntity(
+        id = 0,
+        author = author,
+        objectId = objectId,
+        createdAt = createdAt,
+        storyUrl = getUrl(),
+        title = getTitle())
+
+fun HitEntity.toHit() =
+    Hit(
+        objectId = objectId,
+        createdAt = createdAt,
+        author = author,
+        storyUrl = storyUrl,
+        url = null,
+        highLightResult = HighLightResult(
+            title = Title(title),
+            storyTitle = null,
+            storyUrl = null,
+            url = null)
+    )

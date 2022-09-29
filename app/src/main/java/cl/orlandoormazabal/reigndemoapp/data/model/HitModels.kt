@@ -7,8 +7,8 @@ data class HitList(
     val hitList: List<Hit>)
 
 data class Hit(
-    @SerializedName("story_id")
-    val storyId: Int,
+    @SerializedName("objectID")
+    val objectId: String,
     @SerializedName ("created_at")
     val createdAt: String,
     @SerializedName("author")
@@ -46,4 +46,3 @@ data class StoryUrl(
 data class Url(
     @SerializedName("value")
     val value: String?)
-
