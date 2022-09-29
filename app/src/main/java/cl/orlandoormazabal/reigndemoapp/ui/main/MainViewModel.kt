@@ -20,7 +20,7 @@ class MainViewModel(private val repo: Repo): ViewModel() {
                 try {
                     hitList.value = Resource.Success(repo.getHits())
                 } catch (e: Exception) {
-
+                    hitList.value = Resource.Failure(Exception())
                 }
             }
         }
