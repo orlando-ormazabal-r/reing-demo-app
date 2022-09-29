@@ -1,5 +1,7 @@
 package cl.orlandoormazabal.reigndemoapp.extensions
 
+import android.webkit.WebView
+import android.webkit.WebViewClient
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -15,7 +17,26 @@ fun Hit.getTitle() = highLightResult.storyTitle?.value ?: highLightResult.title.
 
 fun Hit.getAuthor() = author
 
+fun Hit.getUrl() =
+    when {
+        this.storyUrl != null -> this.storyUrl
+        this.url != null -> this.url
+        this.highLightResult.storyUrl?.value != null -> this.highLightResult.storyUrl.value
+        this.highLightResult.url?.value != null -> highLightResult.url.value
+        else -> null
+    }
+
 fun RecyclerView.addDividerDecorator() {
     val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
     this.addItemDecoration(dividerItemDecoration)
+}
+
+fun WebView.loadUrl(url: String, func: () -> Unit = { } ) {
+    this.webViewClient = object: WebViewClient() {
+        override fun onPageFinished(view: WebView?, url: String?) {
+            super.onPageFinished(view, url)
+            func()
+        }
+    }
+    this.loadUrl(url)
 }

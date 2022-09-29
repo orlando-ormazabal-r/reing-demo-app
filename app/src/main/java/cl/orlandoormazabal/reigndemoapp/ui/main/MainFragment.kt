@@ -4,11 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
+import androidx.navigation.fragment.findNavController
+import cl.orlandoormazabal.reigndemoapp.R
 import cl.orlandoormazabal.reigndemoapp.base.resource.Resource
+import cl.orlandoormazabal.reigndemoapp.constants.HIT_URL_BUNDLE
 import cl.orlandoormazabal.reigndemoapp.data.model.Hit
 import cl.orlandoormazabal.reigndemoapp.databinding.FragmentMainBinding
 import cl.orlandoormazabal.reigndemoapp.extensions.addDividerDecorator
+import cl.orlandoormazabal.reigndemoapp.extensions.getUrl
 import cl.orlandoormazabal.reigndemoapp.extensions.observe
 import cl.orlandoormazabal.reigndemoapp.ui.main.adapter.MainAdapter
 import org.koin.android.ext.android.inject
@@ -22,7 +27,7 @@ class MainFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel by inject<MainViewModel>()
-    private val adapter = MainAdapter()
+    private val adapter = MainAdapter(HitManager())
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -80,5 +85,12 @@ class MainFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+
+    inner class HitManager : MainAdapter.HitManager {
+        override fun onHitItemClick(hit: Hit) {
+            findNavController().navigate(R.id.mainFragment_to_detailFragment,
+            bundleOf(HIT_URL_BUNDLE to hit.getUrl()))
+        }
     }
 }

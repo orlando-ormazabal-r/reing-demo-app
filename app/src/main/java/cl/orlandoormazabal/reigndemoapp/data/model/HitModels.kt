@@ -14,7 +14,9 @@ data class Hit(
     @SerializedName("author")
     val author: String,
     @SerializedName("story_url")
-    val storyUrl: String,
+    val storyUrl: String?,
+    @SerializedName("url")
+    val url: String?,
     @SerializedName("_highlightResult")
     val highLightResult: HighLightResult)
 
@@ -22,7 +24,12 @@ data class HighLightResult(
     @SerializedName("story_title")
     val storyTitle: StoryTitle?,
     @SerializedName("title")
-    val title: Title)
+    val title: Title,
+    @SerializedName("story_url")
+    val storyUrl: StoryUrl?,
+    @SerializedName("url")
+    val url: Url?
+)
 
 data class Title(
     @SerializedName("value")
@@ -31,3 +38,12 @@ data class Title(
 data class StoryTitle(
     @SerializedName("value")
     val value: String)
+
+data class StoryUrl(
+    @SerializedName("value")
+    val value: String?)
+
+data class Url(
+    @SerializedName("value")
+    val value: String?)
+

@@ -6,7 +6,11 @@ import cl.orlandoormazabal.reigndemoapp.base.viewholder.BaseViewHolder
 import cl.orlandoormazabal.reigndemoapp.data.model.Hit
 import cl.orlandoormazabal.reigndemoapp.widget.HitItemView
 
-class MainAdapter: BaseAdapter<Hit>() {
+class MainAdapter(private val manager: HitManager): BaseAdapter<Hit>() {
+
+    interface HitManager {
+        fun onHitItemClick(hit: Hit)
+    }
 
     override fun provideComparator() = compareBy(Hit::storyId)
 
@@ -17,6 +21,9 @@ class MainAdapter: BaseAdapter<Hit>() {
 
         override fun bindView(item: Hit) {
             view.setHitContentData(item)
+            view.setOnClickListener {
+                manager.onHitItemClick(item)
+            }
         }
     }
 }
