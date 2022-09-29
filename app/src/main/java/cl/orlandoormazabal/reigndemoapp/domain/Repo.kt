@@ -5,4 +5,5 @@ import cl.orlandoormazabal.reigndemoapp.data.model.Hit
 interface Repo {
 
     suspend fun getHits(): List<Hit>
+    suspend fun insertDeleteHitId(id: String)
 }

@@ -12,7 +12,7 @@ interface HitDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertHit(hitList: HitEntity)
 
-    @Query("SELECT * FROM hit_table")
+    @Query("SELECT * FROM hit_table WHERE object_id NOT IN (SELECT object_id FROM hit_id_table)")
     suspend fun getHits(): List<HitEntity>
 
     @Query("DELETE FROM hit_table")

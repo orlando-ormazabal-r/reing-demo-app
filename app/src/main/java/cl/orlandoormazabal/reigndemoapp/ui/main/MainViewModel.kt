@@ -1,6 +1,5 @@
 package cl.orlandoormazabal.reigndemoapp.ui.main
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,20 +11,28 @@ import java.lang.Exception
 
 class MainViewModel(private val repo: Repo): ViewModel() {
 
-    private val _hitList = MutableLiveData<Resource<List<Hit>>>()
-    val hitList: LiveData<Resource<List<Hit>>>
-        get() = _hitList
+    val hitList = MutableLiveData<Resource<List<Hit>>?>()
 
     fun getHitList() {
-        if(hitList.value == null) {
+        if (hitList.value == null) {
             viewModelScope.launch {
-                _hitList.value = Resource.Loading()
+                hitList.value = Resource.Loading()
                 try {
-                    _hitList.value = Resource.Success(repo.getHits())
+                    hitList.value = Resource.Success(repo.getHits())
                 } catch (e: Exception) {
 
                 }
             }
         }
+    }
+
+    fun insertDeleteHitId(id: String) {
+        viewModelScope.launch {
+            repo.insertDeleteHitId(id)
+        }
+    }
+
+    fun clearData() {
+        hitList.value = null
     }
 }
