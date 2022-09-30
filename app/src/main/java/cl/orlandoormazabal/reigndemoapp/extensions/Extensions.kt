@@ -3,8 +3,10 @@ package cl.orlandoormazabal.reigndemoapp.extensions
 import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.drawable.ColorDrawable
+import android.os.Build
 import android.webkit.WebView
 import android.webkit.WebViewClient
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.Observer
@@ -16,13 +18,23 @@ import cl.orlandoormazabal.reigndemoapp.data.model.Hit
 import cl.orlandoormazabal.reigndemoapp.data.model.HitEntity
 import cl.orlandoormazabal.reigndemoapp.data.model.Title
 import cl.orlandoormazabal.reigndemoapp.data.model.HighLightResult
+import java.time.Instant
+import java.time.ZonedDateTime
+import java.time.format.DateTimeFormatter
+import java.util.*
 
 fun <T, L : LiveData<T>> Fragment.observe(liveData: L, body: (T?) -> Unit) =
     liveData.observe(viewLifecycleOwner, Observer(body))
 
-fun Hit.getTitle() = highLightResult.storyTitle?.value ?: highLightResult.title.value
+fun Hit.getTitle() =
+    when {
+        highLightResult.storyTitle?.value != null -> highLightResult.storyTitle.value
+        highLightResult.title?.value != null -> highLightResult.title.value
+        else -> "No title"
+    }
 
-fun Hit.getAuthor() = author
+@RequiresApi(Build.VERSION_CODES.O)
+fun Hit.getAuthorAndCreatedAt() = "$author - ${this.getCreatedAt()}"
 
 fun Hit.getUrl() =
     when {
@@ -32,6 +44,23 @@ fun Hit.getUrl() =
         this.highLightResult.url?.value != null -> highLightResult.url.value
         else -> null
     }
+
+@RequiresApi(Build.VERSION_CODES.O)
+fun Hit.getCreatedAt(): String {
+    val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.FRANCE)
+    val created = Date.from(Instant.parse(formatter.format(ZonedDateTime.parse(createdAt))))
+    val currentDate = Calendar.getInstance()
+    val datesDifference = currentDate.timeInMillis - created.time
+    val minutes = datesDifference/(1000 * 60)
+    val hours = datesDifference/(1000 * 60 * 60)
+    val days = datesDifference/(1000 * 60 * 60 * 24)
+    return when {
+        days.toInt() >= 2 -> "${days}d"
+        days.toInt() == 1 -> "Yesterday"
+        hours in 1..23 -> "${hours}h"
+        else -> "${minutes}m"
+    }
+}
 
 fun RecyclerView.addDividerDecorator() {
     val dividerItemDecoration = DividerItemDecoration(context, LinearLayoutManager.VERTICAL)
@@ -71,7 +100,7 @@ fun HitEntity.toHit() =
             url = null)
     )
 
-fun RecyclerView.addSwipeAction(onLeft: (position: Int) -> Unit) {
+fun RecyclerView.addSwipeListener(onLeft: (position: Int) -> Unit) {
 
     val simpleCallback = object :
         ItemTouchHelper.SimpleCallback(

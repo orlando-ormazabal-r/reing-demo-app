@@ -14,7 +14,7 @@ class RepoImp(
     ): Repo {
 
     override suspend fun getHits(): List<Hit> {
-         if (networkState.isInternetAvailable().isInternetAvailable) {
+        if (networkState.isInternetAvailable().isInternetAvailable) {
             hitDao.deletePreviousHits()
             val newHitList = remoteDataSource.getRemoteHits()
             newHitList.map { it.toHitEntity() }.forEach { entity ->

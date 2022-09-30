@@ -19,8 +19,19 @@ android {
     }
 
     buildTypes {
-        release {
+
+        debug {
+            debuggable true
             minifyEnabled false
+            applicationIdSuffix ".debug"
+            buildConfigField "String", "SERVICE_URL", "\"https://hn.algolia.com/api/v1/\""
+        }
+
+        release {
+            minifyEnabled true
+            applicationIdSuffix ".relase"
+            buildConfigField "String", "SERVICE_URL", "\"https://hn.algolia.com/api/v1/\""
+
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }

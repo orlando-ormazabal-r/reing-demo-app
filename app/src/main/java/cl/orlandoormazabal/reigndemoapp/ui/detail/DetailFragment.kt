@@ -39,7 +39,7 @@ class DetailFragment : Fragment() {
     }
 
     private fun verifyUrl() {
-        if( hitUrl != null) {
+        if (hitUrl != null) {
             loadHitPage(hitUrl!!)
         } else {
             displayView(SHOW_NO_URL)

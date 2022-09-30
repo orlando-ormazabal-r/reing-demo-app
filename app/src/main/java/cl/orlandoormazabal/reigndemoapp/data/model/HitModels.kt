@@ -24,7 +24,7 @@ data class HighLightResult(
     @SerializedName("story_title")
     val storyTitle: StoryTitle?,
     @SerializedName("title")
-    val title: Title,
+    val title: Title?,
     @SerializedName("story_url")
     val storyUrl: StoryUrl?,
     @SerializedName("url")

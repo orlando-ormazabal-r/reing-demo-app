@@ -4,11 +4,10 @@ import android.content.Context
 import android.content.res.Resources
 import android.util.AttributeSet
 import android.view.LayoutInflater
-import android.view.ViewGroup
 import androidx.constraintlayout.widget.ConstraintLayout
 import cl.orlandoormazabal.reigndemoapp.data.model.Hit
 import cl.orlandoormazabal.reigndemoapp.databinding.ViewHitItemBinding
-import cl.orlandoormazabal.reigndemoapp.extensions.getAuthor
+import cl.orlandoormazabal.reigndemoapp.extensions.getAuthorAndCreatedAt
 import cl.orlandoormazabal.reigndemoapp.extensions.getTitle
 
 class HitItemView @JvmOverloads constructor(
@@ -26,7 +25,7 @@ class HitItemView @JvmOverloads constructor(
     fun setHitContentData(hit: Hit) {
         with(binding) {
             titleLabel.text = hit.getTitle()
-            authorLabel.text = hit.getAuthor()
+            authorLabel.text = hit.getAuthorAndCreatedAt()
         }
     }
 }

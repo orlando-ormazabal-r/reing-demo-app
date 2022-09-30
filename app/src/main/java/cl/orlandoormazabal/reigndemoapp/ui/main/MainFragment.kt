@@ -13,7 +13,7 @@ import cl.orlandoormazabal.reigndemoapp.constants.HIT_URL_BUNDLE
 import cl.orlandoormazabal.reigndemoapp.data.model.Hit
 import cl.orlandoormazabal.reigndemoapp.databinding.FragmentMainBinding
 import cl.orlandoormazabal.reigndemoapp.extensions.addDividerDecorator
-import cl.orlandoormazabal.reigndemoapp.extensions.addSwipeAction
+import cl.orlandoormazabal.reigndemoapp.extensions.addSwipeListener
 import cl.orlandoormazabal.reigndemoapp.extensions.getUrl
 import cl.orlandoormazabal.reigndemoapp.extensions.observe
 import cl.orlandoormazabal.reigndemoapp.ui.main.adapter.MainAdapter
@@ -61,9 +61,12 @@ class MainFragment : Fragment() {
     }
 
     private fun setRecyclerView() {
-        binding.recyclerView.addSwipeAction { position ->
-            adapter.removeItemAt(position, true)
+        binding.recyclerView.addSwipeListener { position ->
             viewModel.insertDeleteHitId(adapter.getItem(position).objectId)
+            adapter.removeItemAt(position, true)
+            if (adapter.itemCount == 0) {
+                displayView(SHOW_EMPTY_LIST)
+            }
         }
         binding.recyclerView.addDividerDecorator()
         binding.recyclerView.adapter = adapter
